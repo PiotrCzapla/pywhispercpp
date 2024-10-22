@@ -170,12 +170,20 @@ class RepairWheel(bdist_wheel):
             self.copy_file(repaired_wheel, wheel_path)
             print(f"Copied repaired wheel to: {wheel_path}")
      
+def get_version_from_git():
+    try:
+        return subprocess.check_output(["git", "describe", "--tags"]).strip().decode("utf-8")
+    except Exception as e:
+        print(f"Error getting version from git: {e}")
+        return "0.0.0"
+
+version = get_version_from_git()
 
 # The information here can also be placed in setup.cfg - better separation of
 # logic and declaration, and simpler if you include description/version in a file.
 setup(
     name="pywhispercpp",
-    version="1.2.0",
+    version=version,
     author="abdeladim-s",
     description="Python bindings for whisper.cpp",
     long_description=long_description,
